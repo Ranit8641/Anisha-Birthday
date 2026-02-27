@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Anisha 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:#fff;
+}
+
+.slider-container{
+    width:90%;
+    max-width:360px;
+    border-radius:25px;
+    overflow:hidden;
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(12px);
+    box-shadow:0 25px 50px rgba(0,0,0,0.6);
+}
+
+.slider{
+    display:flex;
+    transition:0.8s ease-in-out;
+}
+
+.slide{
+    min-width:100%;
+    padding:20px;
+    text-align:center;
+}
+
+.slide img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    border-radius:20px;
+    margin-bottom:15px;
+}
+
+.slide h2{
+    font-family:'Great Vibes',cursive;
+    font-size:34px;
+    color:#ffb6c1;
+    margin-bottom:8px;
+}
+
+.slide p{
+    font-size:14px;
+    line-height:1.8;
+    color:#f3f3f3;
+}
+
+/* Candle */
+.candle{
+    width:40px;
+    height:90px;
+    background:#fff;
+    margin:20px auto;
+    border-radius:10px;
+    position:relative;
+}
+
+.flame{
+    width:18px;
+    height:18px;
+    background:orange;
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:50%;
+    animation:flicker 0.2s infinite;
+}
+
+@keyframes flicker{
+    0%{transform:translateX(-50%) scale(1);}
+    50%{transform:translateX(-50%) scale(1.1);}
+    100%{transform:translateX(-50%) scale(1);}
+}
+
+button{
+    border:none;
+    padding:10px 25px;
+    border-radius:25px;
+    background:linear-gradient(45deg,#ff758c,#ff7eb3);
+    color:#fff;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+/* Confetti */
+.confetti{
+    position:fixed;
+    width:8px;
+    height:8px;
+    top:-10px;
+    animation:fall 4s linear infinite;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+@media(max-width:480px){
+    .slide img{height:260px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="slider-container">
+    <div class="slider" id="slider">
+
+        <div class="slide">
+            <img src="FB_IMG_1767783508249.jpg">
+            <h2>Happy Birthday</h2>
+            <p>
+                Some people don’t need to try to be special,  
+                they just are 🌸  
+                And you’re one of those rare souls, Anisha 💖
+            </p>
+        </div>
+
+        <div class="slide">
+            <img src="FB_IMG_1767783528647.jpg">
+            <h2>Just You ✨</h2>
+            <p>
+                Your smile feels calm,  
+                your presence feels safe,  
+                and knowing you quietly makes days better 💫
+            </p>
+        </div>
+
+        <div class="slide">
+            <img src="IMG_20260107_163555.jpg">
+            <h2>From the Heart 💌</h2>
+            <p>
+                I hope life gives you moments that feel warm,  
+                people who value you deeply,  
+                and happiness that stays longer than sadness 🌙
+            </p>
+        </div>
+
+        <div class="slide" id="lastSlide">
+            <img src="IMG_20260107_163643.jpg">
+            <h2>Make a Wish 🎂</h2>
+            <p>
+                Close your eyes, take a breath,  
+                and wish for something your heart truly wants 💖  
+                You deserve beautiful things, always.
+            </p>
+
+            <div class="candle">
+                <div class="flame" id="flame"></div>
+            </div>
+
+            <button onclick="event.stopPropagation(); blowCandle()">Blow the Candle 🕯️</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- NEXT BUTTON -->
+<button onclick="event.stopPropagation(); nextSlide()">Next ➡</button>
+
+<audio id="music" src="Happy_Birthday_5.mp3" loop></audio>
+
+<script>
+const slider = document.getElementById("slider");
+const slides = document.querySelectorAll(".slide");
+const music = document.getElementById("music");
+let index = 0;
+let musicStarted = false;
+
+// Start music on first interaction
+document.body.addEventListener("click", ()=>{
+    if(!musicStarted){
+        music.play().catch(()=>{});
+        musicStarted = true;
+    }
+},{once:true});
+
+function showSlide(){
+    slider.style.transform = `translateX(-${index * 100}%)`;
+}
+
+function nextSlide(){
+    if(index < slides.length - 1){
+        index++;
+        showSlide();
+
+        if(index === slides.length - 1){
+            launchConfetti();
+        }
+    }
+}
+
+// Tap slide → next slide
+slider.addEventListener("click", ()=>{
+    nextSlide();
+});
+
+function blowCandle(){
+    document.getElementById("flame").style.display = "none";
+    launchConfetti();
+}
+
+function launchConfetti(){
+    for(let i=0;i<80;i++){
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+        conf.style.left = Math.random()*100 + "vw";
+        conf.style.background = `hsl(${Math.random()*360},100%,70%)`;
+        conf.style.animationDuration = 2 + Math.random()*3 + "s";
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),5000);
+    }
+}
+</script>
+
+</body>
+</html>
